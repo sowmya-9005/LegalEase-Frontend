@@ -83,7 +83,7 @@ const RightsPage = () => {
   // Fetch rights
   const fetchRights = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/rights");
+      const res = await axios.get("https://legalease-backend-y5nn.onrender.com/api/rights");
       setRights([...predefinedRights, ...res.data]);
     } catch (err) {
       console.error(err.response?.data || err);
