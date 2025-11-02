@@ -83,7 +83,7 @@ const RightsPage = () => {
   // Fetch rights
   const fetchRights = async () => {
     try {
-      const res = await axios.get("https://legalease-backend-y5nn.onrender.com/api/rights");
+      const res = await axios.get("https://legal-ease-backend-one.vercel.app/api/rights");
       setRights([...predefinedRights, ...res.data]);
     } catch (err) {
       console.error(err.response?.data || err);
@@ -123,7 +123,7 @@ const RightsPage = () => {
         );
         alert("Right updated successfully!");
       } else {
-        await axios.post("https://legalease-backend-y5nn.onrender.com/api/rights", formData, {
+        await axios.post("https://legal-ease-backend-one.vercel.app/api/rights", formData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         alert("Right added successfully!");
@@ -142,7 +142,7 @@ const RightsPage = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this right?")) return;
     try {
-      await axios.delete(`https://legalease-backend-y5nn.onrender.com/api/rights/${id}`, {
+      await axios.delete(`https://legal-ease-backend-one.vercel.app/api/rights/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("Right deleted successfully!");
