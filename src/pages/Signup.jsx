@@ -15,7 +15,7 @@ const Signup = ({ setUser }) => {
       return alert("Please fill all fields and select a role");
 
     try {
-      await axios.post("https://legalease-backend-y5nn.onrender.com/api/auth/register", {
+      await axios.post("https://legal-ease-backend-one.vercel.app/api/auth/register", {
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
         password: form.password,
