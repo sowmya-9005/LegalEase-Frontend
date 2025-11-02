@@ -117,7 +117,7 @@ const RightsPage = () => {
     try {
       if (editRight) {
         await axios.put(
-          `https://legalease-backend-y5nn.onrender.com/api/rights/${editRight._id}`,
+          `https://legal-ease-backend-one.vercel.app/api/rights/${editRight._id}`,
           formData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
