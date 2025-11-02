@@ -1,3 +1,16 @@
+/* === NORMALIZE / SAFETY === */
+/* keep this small and scoped to header to avoid site-wide changes */
+.header,
+.header * {
+  box-sizing: border-box;
+}
+
+/* Reset any stray margins/paddings inside header */
+.header > * {
+  margin: 0;
+  padding: 0;
+}
+
 /* === HEADER CONTAINER === */
 .header {
   position: relative; /* Enable absolute positioning inside */
@@ -5,7 +18,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 40px;
-   background-color: #2f3e53;
+  background-color: #2f3e53;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
@@ -24,14 +37,14 @@
   font-size: 22px;
   font-weight: bold;
   text-decoration: none;
-  color:white; /* gray-800 */
+  color: white;
   white-space: nowrap;
 }
 
 .logo-icon {
   font-size: 24px;
   margin-right: 8px;
-  color:white; /* blue-500 */
+  color: white;
 }
 
 /* === NAV LINKS (centered absolutely) === */
@@ -46,7 +59,7 @@
 
 .nav-links a {
   text-decoration: none;
-  color:white;
+  color: white;
   font-weight: 500;
   font-size: 15px;
   transition: color 0.3s ease;
@@ -59,26 +72,30 @@
 }
 
 .nav-links a.active {
-  color:white;       /* default dark color */
-  font-weight: 700;     /* bold */
+  color: white;
+  font-weight: 700;
 }
 
 /* Hover for active link */
 .nav-links a.active:hover {
-  color:white;       /* blue on hover */
+  color: white;
 }
 
 /* === RIGHT SIDE: Language + Buttons === */
+/* ensure header-right is a single horizontal flexline and items are vertically centered */
 .header-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 12px; /* spacing between elements */
+  min-height: 40px; /* keeps container consistent */
+  line-height: 1;    /* avoid inherited line-height weirdness */
 }
 
 /* === LANGUAGE DROPDOWN CONTAINER === */
 .lang-dropdown {
-  position: relative; /* Keep it relative for the dropdown menu */
-  display: inline-block;
+  position: relative;
+  display: inline-flex; /* inline-flex so it aligns with buttons */
+  align-items: center;
 }
 
 /* === LANGUAGE BUTTON === */
@@ -89,22 +106,21 @@
   font-weight: 500;
   color: white;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 6px 10px;
   border-radius: 6px;
   transition: background 0.2s, color 0.2s;
+  vertical-align: middle;
+  line-height: 1;
 }
-
 .lang-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1); /* subtle hover effect */
+  background-color: rgba(255, 255, 255, 0.1);
 }
-
 .lang-icon {
   font-size: 16px;
 }
-
 .dropdown-arrow {
   margin-left: 4px;
 }
@@ -129,49 +145,72 @@
 .lang-menu li {
   padding: 10px 12px;
   font-size: 14px;
-  color: #2f3e53; /* Dark text */
+  color: #2f3e53;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
-
 .lang-menu li:hover {
-  background-color: #2563eb; /* Blue hover */
+  background-color: #3da8d8;
   color: white;
 }
 
-
-/* === LOGIN BUTTON === */
-.login-btn {
-  padding: 6px 18px;
-  background-color: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 14px;
+/* === LOGIN & SIGNUP BUTTONS (WHITE VERSION, STRONG ALIGNMENT) === */
+/* unify border thickness and sizing to avoid 1px differences causing misalignment */
+.header-right .login-btn,
+.header-right .signup-btn {
+  display: inline-flex;               /* inline-flex so it flows within header-right */
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  box-sizing: border-box;             /* include borders in sizing */
+  margin: 0;                           /* remove stray margins */
+  min-height: 40px;                    /* explicit height to ensure alignment */
+  padding: 0 18px;                     /* use top/bottom via min-height + center rather than asymmetric padding */
+  height: 40px;                        /* explicit height helps perfect alignment */
+  background: white;
+  color: #005eff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 16px;
   font-weight: 500;
+  border: 2px solid #005eff;           /* use consistent border thickness */
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background 0.2s, color 0.2s, transform 0.12s;
   white-space: nowrap;
+  line-height: 1;                      /* avoid unexpected extra height */
 }
 
-.login-btn:hover {
-  background-color:white;
-}
+/* If you prefer a slightly smaller border, change border: 2px to 1px — but keep same for both buttons. */
 
-/* === SIGNUP BUTTON === */
-.signup-btn {
-  padding: 6px 18px;
-  background-color: #2563eb;
+/* Hover / Active states */
+.header-right .login-btn:hover,
+.header-right .signup-btn:hover,
+.header-right .login-btn:focus,
+.header-right .signup-btn:focus {
+  background: #005eff;
   color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  white-space: nowrap;
+  outline: none;
+  transform: translateY(-1px);
 }
 
-.signup-btn:hover {
-  background-color:white;
+/* remove default focus outline but keep accessibility hint via box-shadow */
+.header-right .login-btn:focus-visible,
+.header-right .signup-btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0, 94, 255, 0.15);
+}
+
+/* Optional: keep the language button perfectly sized to buttons */
+.lang-btn {
+  padding: 0 12px;            /* match visual balance with buttons */
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* tiny utility to ensure inline elements inside header don't add extra height */
+.header-right > * {
+  display: inline-flex;
+  align-items: center;
 }

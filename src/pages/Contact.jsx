@@ -1,7 +1,10 @@
+// src/pages/Contact.jsx
 import React, { useState } from "react";
-import "./Contact.css";
+import { useQueries } from "../context/QueriesContext";
+import "./Contact.css"; // optional styling file
 
 const Contact = () => {
+  const { addQuery } = useQueries();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -9,92 +12,75 @@ const Contact = () => {
     category: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Your query has been submitted. Our legal team will contact you soon!");
-    setFormData({ name: "", email: "", phone: "", category: "", message: "" });
+    if (!formData.name || !formData.email || !formData.message) {
+      return alert("Please fill name, email and message");
+    }
+
+    setLoading(true);
+    try {
+      await addQuery(formData);
+      alert("✅ Your query has been submitted");
+      setFormData({ name: "", email: "", phone: "", category: "", message: "" });
+    } catch (err) {
+      console.error("Contact submit error:", err);
+      alert(err.response?.data?.message || "Failed to submit query");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="contact-container">
-      <h1>Contact LegalEase</h1>
-      <p>Reach out to our legal aid team for any legal emergencies or queries.</p>
+    <div className="contact-wrapper">
+  <div className="contact-card">
+    <h1 className="contact-title">Contact LegalEase</h1>
+    <p className="contact-subtitle">Submit your legal query — public users can submit. Logged-in users can reply.</p>
 
-      {/* Contact Form */}
-      <div className="contact-form-container">
-        <h2>Submit a Legal Query</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="tel"
-            name="phone"
-            placeholder="Phone Number"
-            value={formData.phone}
-            onChange={handleChange}
-            required
-          />
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            required
-          >
-           
-  <option value="">Select Category</option>
-  <option value="Fundamental Rights">Fundamental Rights</option>
-  <option value="Constitutional Rights">Constitutional Rights</option>
-  <option value="Civil Rights">Civil Rights</option>
-  <option value="Political Rights">Political Rights</option>
-  <option value="Economic Rights">Economic Rights</option>
-  <option value="Social Rights">Social Rights</option>
-  <option value="Human Rights">Human Rights</option>
-  <option value="Workplace Rights">Workplace Rights</option>
-  <option value="Consumer Rights">Consumer Rights</option>
-  <option value="Women & Child Rights">Women & Child Rights</option>
-  <option value="Digital Rights">Digital Rights</option>
-  <option value="Environmental Rights">Environmental Rights</option>
-  <option value="Disability Rights">Disability Rights</option>
-  <option value="Senior Citizen Rights">Senior Citizen Rights</option>
-  <option value="LGBTQ+ Rights">LGBTQ+ Rights</option>
-  <option value="Minority Rights">Minority Rights</option>
-  <option value="Police & Crime">Police & Crime</option>
-  <option value="Workplace & Labor">Workplace & Labor</option>
-  <option value="Cyber & Online Legal Issues">Cyber & Online Legal Issues</option>
-  <option value="Other">Other</option>
-
-
-          </select>
-          <textarea
-            name="message"
-            placeholder="Describe your legal query"
-            value={formData.message}
-            onChange={handleChange}
-            required
-          ></textarea>
-          <button type="submit">Submit Query</button>
-        </form>
+    <form onSubmit={handleSubmit}>
+      <div className="form-group">
+        <label>Full Name</label>
+        <input className="form-control" name="name" value={formData.name} onChange={handleChange} required />
       </div>
-    </div>
+
+      <div className="form-group">
+        <label>Email</label>
+        <input className="form-control" type="email" name="email" value={formData.email} onChange={handleChange} required />
+      </div>
+
+      <div className="form-group">
+        <label>Phone (optional)</label>
+        <input className="form-control" name="phone" value={formData.phone} onChange={handleChange} />
+      </div>
+
+      <div className="form-group">
+        <label>Category</label>
+        <select className="form-control" name="category" value={formData.category} onChange={handleChange}>
+          <option value="">Select category</option>
+          <option>Fundamental Rights</option>
+          <option>Consumer Rights</option>
+          <option>Women & Child Rights</option>
+          <option>Digital Rights</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label>Describe your issue</label>
+        <textarea className="form-control" name="message" value={formData.message} onChange={handleChange} required />
+      </div>
+
+      <button className="contact-btn" type="submit" disabled={loading}>
+        {loading ? "Submitting..." : "Submit Query"}
+      </button>
+    </form>
+  </div>
+</div>
+
   );
 };
 

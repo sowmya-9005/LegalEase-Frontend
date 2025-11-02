@@ -1,16 +1,16 @@
 import React from "react";
 import "./Footer.css";
+import { Link } from "react-router-dom";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt, FaClock } from "react-icons/fa";
 
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-container">
+
         {/* Logo and Description */}
         <div className="footer-section about">
-          <h2 className="footer-logo">
-          LegalEase
-          </h2>
+          <h2 className="footer-logo">LegalEase</h2>
           <p>
             Providing accessible legal services and resources to help you
             understand and protect your rights.
@@ -21,10 +21,11 @@ const Footer = () => {
         <div className="footer-section links">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="/pages/RightsPage">Know Your Rights</a></li>
-            <li><a href="/pages/Emergency">Emergency Legal Help</a></li>
-            <li><a href="/pages/About">About Us</a></li>
-            <li><a href="/pages/Contact">Contact</a></li>
+            <li><Link to="/rights">Know Your Rights</Link></li>
+            <li><Link to="/emergency">Emergency Legal Help</Link></li>
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/queries">Queries</Link></li>
           </ul>
         </div>
 
@@ -55,7 +56,11 @@ const Footer = () => {
 
       {/* Footer Bottom */}
       <div className="footer-bottom">
-        <p>© 2024 LegalEase. All rights reserved. | <a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Service</a></p>
+        <p>
+          © 2024 LegalEase. All rights reserved. | 
+          <Link to="/privacy"> Privacy Policy</Link> | 
+          <Link to="/terms"> Terms of Service</Link>
+        </p>
       </div>
     </footer>
   );

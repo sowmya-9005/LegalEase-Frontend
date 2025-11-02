@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import "./Login.css";
 
-const Login = ({ setUser }) => {
+
+const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -19,10 +23,8 @@ const Login = ({ setUser }) => {
         password: form.password,
       });
 
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-      setUser(res.data.user);
-      navigate("/"); // redirect to homepage
+      login({ user: res.data.user, token: res.data.token }); // ✅ updates AuthContext
+      navigate("/");
     } catch (err) {
       console.error(err.response?.data || err);
       alert(err.response?.data?.message || "Login failed");
@@ -30,34 +32,37 @@ const Login = ({ setUser }) => {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "50px auto" }}>
-      <h2>Login</h2>
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-      >
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit" style={{ padding: "10px" }}>
-          Login
-        </button>
-      </form>
-    </div>
+    <div className="login-wrapper">
+  <div className="login-box">
+    <h2 className="login-title">Login</h2>
+    <p className="login-subtext">Sign in to access your account</p>
+
+    <form className="login-form" onSubmit={handleSubmit}>
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        value={form.email}
+        onChange={handleChange}
+        required
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        value={form.password}
+        onChange={handleChange}
+        required
+      />
+      <button type="submit" className="login-btn">
+        Login
+      </button>
+    </form>
+  </div>
+</div>
+
   );
 };
+
 
 export default Login;

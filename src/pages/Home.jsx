@@ -1,160 +1,217 @@
-
-
-import React from 'react';
-import './Home.css';
-import legalimg from "./legal-img.png";
-
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import {
-  faCheckCircle,
-  faHeadset,
-  faLockOpen,
-  faGraduationCap,
-  faBriefcase,
-  faUser,
-  faGlobe,
-  faArrowRight,
-  faBookOpen,
-  faEye,
-  faBullseye,
-  faUsers,
-  faLightbulb
-} from '@fortawesome/free-solid-svg-icons';
+  FaSearch,
+  FaGavel,
+  FaLanguage,
+  FaRobot,
+  FaBookOpen,
+  FaEye,
+  FaBullseye,
+  FaUsers,
+  FaLightbulb,
+} from "react-icons/fa";
+import "./Home.css";
 
-const HomePage = () => {
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1400&q=80";
+
+const Home = () => {
+  const [q, setQ] = useState("");
+  const navigate = useNavigate();
+
+  // ✅ Dynamically inject Font Awesome CDN once
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href =
+      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css";
+    link.integrity =
+      "sha512-4oVap6zkD6n3p6WwXPGKX2bIayG/0U6V3qVSmGQnB1EoO+oXvPz2UVDfqVfFjUjH7QynvR7cmVQtRDbwOvlQAA==";
+    link.crossOrigin = "anonymous";
+    document.head.appendChild(link);
+  }, []);
+
+  const onSearch = (e) => {
+  e.preventDefault();
+  const search = (q || "").trim();
+
+  // ✅ Redirect only if something is entered
+  if (search.length > 0) {
+    navigate(`/rights?search=${encodeURIComponent(search)}`);
+  } else {
+    alert("Please enter a keyword before searching.");
+  }
+};
+
   return (
-    <div className="hero">
-      <div className="overlay"></div>
-      <div className="hero-content">
-        <h1>Welcome to <span className="highlight">LegalEase</span></h1>
-        <p className="tagline">
-          Your trusted legal rights awareness and guidance platform. Empowering citizens with accessible legal knowledge.
-        </p>
-    <div className="hero-image">
-  <img src={legalimg} alt="LegalEase" />
-</div>
-        <div className="features">
-          <span><FontAwesomeIcon icon={faCheckCircle} /> Rights Awareness</span>
-          <span><FontAwesomeIcon icon={faHeadset} /> 24/7 Guidance</span>
-          <span><FontAwesomeIcon icon={faLockOpen} /> Free Access</span>
-        </div>
-
-        <div className="cta">
-          <button className="start-btn">Start Learning <FontAwesomeIcon icon={faArrowRight} /></button>
-          <input type="text" className="search-bar" placeholder="Search..." />
-        </div>
-
-        <hr className="divider" />
-
-        <div className="audience">
-          <div className="audience-item">
-            <FontAwesomeIcon icon={faGraduationCap} />
-            <p>Students</p>
-          </div>
-          <div className="audience-item">
-            <FontAwesomeIcon icon={faBriefcase} />
-            <p>Employees</p>
-          </div>
-          <div className="audience-item">
-            <FontAwesomeIcon icon={faUser} />
-            <p>Citizens</p>
-          </div>
-          <div className="audience-item">
-            <FontAwesomeIcon icon={faGlobe} />
-            <p>Organizations</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Legal Awareness Section */}
-      <div className="legal-awareness">
-        <h2>Empowering Legal Awareness</h2>
-        <p className="subheading">
-          Discover how LegalEase is revolutionizing access to legal knowledge and empowering
-          citizens with fundamental rights awareness.
-        </p>
-
-        <div className="info-cards">
-          {/* About LegalEase */}
-          <div className="info-card">
-            <div className="icon-badge"><FontAwesomeIcon icon={faBookOpen} /></div>
-            <div className="info-badge">Our Mission</div>
-            <h3>About LegalEase</h3>
-            <p>
-              LegalEase is a rights awareness platform designed to help individuals understand
-              their fundamental legal rights. It simplifies complex laws into clear, accessible
-              information for everyone.
+    <div className="home-root">
+      {/* HERO SECTION */}
+      <section className="hero-section">
+        <div
+          className="hero-image"
+          style={{ backgroundImage: `url(${HERO_IMAGE})` }}
+          role="img"
+          aria-label="Lady justice"
+        >
+          <div className="hero-overlay" />
+          <div className="hero-center">
+            <h1 className="hero-title">Know Your Rights, Protect Yourself</h1>
+            <p className="hero-sub">
+              LegalEase provides simple, accessible information about your legal
+              rights in multiple languages. Empower yourself with knowledge.
             </p>
-          </div>
 
-          {/* Our Vision */}
-          <div className="info-card">
-            <div className="icon-badge"><FontAwesomeIcon icon={faEye} /></div>
-            <div className="info-badge">Future Goals</div>
-            <h3>Our Vision</h3>
-            <p>
-              We envision a society where every citizen is legally empowered. By spreading awareness
-              and providing reliable legal knowledge, we aim to reduce exploitation and promote justice.
-            </p>
-          </div>
+            <form className="hero-search" onSubmit={onSearch}>
+              <div className="search-input-wrap">
+                <input
+                  type="search"
+                  aria-label="Search rights"
+                  placeholder="Search by topic, law, or keyword..."
+                  value={q}
+                  onChange={(e) => setQ(e.target.value)}
+                />
+              </div>
+              <button className="btn-primary" type="submit" aria-label="Search">
+                <FaSearch />
+              </button>
+            </form>
 
-          {/* Key Features */}
-          <div className="info-card">
-            <div className="icon-badge"><FontAwesomeIcon icon={faCheckCircle} /></div>
-            <div className="info-badge">What We Offer</div>
-            <h3>Key Features</h3>
-            <p>Comprehensive legal education platform with multiple learning resources.</p>
-            <ul className="feature-list">
-              <li><FontAwesomeIcon icon={faCheckCircle} /> Simple explanation of fundamental rights</li>
-              <li><FontAwesomeIcon icon={faCheckCircle} /> Access to legal resources and FAQs</li>
-              <li><FontAwesomeIcon icon={faCheckCircle} /> Case studies and real-world examples</li>
-              <li><FontAwesomeIcon icon={faCheckCircle} /> 24/7 guidance and chatbot support</li>
-            </ul>
+            <div className="hero-cta-row">
+              <Link to="/rights" className="btn-ghost">
+                <i className="fa-solid fa-scale-balanced"></i> Explore Rights
+              </Link>
+              <button
+                className="explore-btn"
+                onClick={() =>
+                  window.scrollTo({ top: 600, behavior: "smooth" })
+                }
+              >
+                Learn more ↓
+              </button>
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* Additional Info Section */}
-        <div className="info-cards">
-          {/* Why Choose LegalEase */}
-          <div className="info-card">
-            <div className="icon-badge"><FontAwesomeIcon icon={faBullseye} /></div>
-            <div className="info-badge">Our Advantage</div>
-            <h3>Why Choose LegalEase?</h3>
+      {/* FEATURES */}
+      <section className="features-section">
+        <h2 className="section-title">What we offer</h2>
+        <div className="features-grid">
+          <article className="feature-card animate-up">
+            <div className="icon">
+              <FaGavel />
+            </div>
+            <h3>Simplified Legal Info</h3>
             <p>
-              LegalEase bridges the gap between complex legal language and everyday understanding.
-              Our app ensures that everyone, regardless of background, has access to justice and awareness.
+              Easy-to-understand explanations of your rights without complex
+              legal jargon.
             </p>
+          </article>
+
+          <article className="feature-card animate-up">
+            <div className="icon">
+              <FaLanguage />
+            </div>
+            <h3>Multiple Languages</h3>
+            <p>
+              Available in regional languages so everyone can access the
+              information.
+            </p>
+          </article>
+
+          <article className="feature-card animate-up">
+            <div className="icon">
+              <FaRobot />
+            </div>
+            <h3>Legal Chatbot</h3>
+            <p>
+              Get quick answers to common questions through our automated
+              assistant.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      {/* CATEGORIES */}
+      <section className="categories-section">
+        <h2 className="section-title">Quick Links</h2>
+        <div className="categories-grid">
+          <Link to="/rights" className="category-card animate-up">
+            <div className="cat-icon">
+              <i className="fa-solid fa-book-open"></i>
+            </div>
+            <div className="cat-title">Fundamental Rights</div>
+            <div className="cat-desc">
+              Articles, explanations and examples to help you understand your
+              core rights.
+            </div>
+          </Link>
+
+          <Link to="/rights" className="category-card animate-up">
+            <div className="cat-icon">
+              <i className="fa-solid fa-scale-balanced"></i>
+            </div>
+            <div className="cat-title">Consumer Rights</div>
+            <div className="cat-desc">
+              Guidance for filing complaints, refunds and product/service
+              disputes.
+            </div>
+          </Link>
+
+          <Link to="/rights" className="category-card animate-up">
+            <div className="cat-icon">
+              <i className="fa-solid fa-people-group"></i>
+            </div>
+            <div className="cat-title">Women & Child Rights</div>
+            <div className="cat-desc">
+              Protection against abuse, domestic violence and child welfare
+              resources.
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* EMERGENCY HELP */}
+      <section className="categories-section">
+        <h2 className="section-title">Emergency Help</h2>
+        <div className="categories-grid">
+          <div className="category-card animate-up">
+            <div className="cat-icon">
+              <i className="fa-solid fa-phone-volume"></i>
+            </div>
+            <div className="cat-title">Immediate Assistance</div>
+            <div className="cat-desc">
+              If you are in danger, call the local emergency services right
+              away.
+            </div>
           </div>
 
-          {/* Who Can Use LegalEase */}
-          <div className="info-card">
-            <div className="icon-badge"><FontAwesomeIcon icon={faUsers} /></div>
-            <div className="info-badge">For Everyone</div>
-            <h3>Who Can Use LegalEase?</h3>
-            <p>Our platform serves diverse communities with tailored legal guidance for different user groups.</p>
-            <ul className="audience-list">
-              <li><strong>Students:</strong> Learn about your rights in education</li>
-              <li><strong>Employees:</strong> Understand workplace rights</li>
-              <li><strong>Citizens:</strong> Get clarity on constitutional rights</li>
-              <li><strong>Organizations:</strong> Promote legal literacy</li>
-            </ul>
+          <div className="category-card animate-up">
+            <div className="cat-icon">
+              <i className="fa-solid fa-shield-halved"></i>
+            </div>
+            <div className="cat-title">Legal Helpline</div>
+            <div className="cat-desc">
+              Hotline: <strong>1-800-LEGAL-HELP</strong> — guidance for urgent
+              legal concerns.
+            </div>
           </div>
 
-          {/* Future Scope */}
-          <div className="info-card">
-            <div className="icon-badge"><FontAwesomeIcon icon={faLightbulb} /></div>
-            <div className="info-badge">Innovation</div>
-            <h3>Future Scope</h3>
-            <p>
-              We aim to integrate AI-driven legal advisors, multi-language support,
-              real-time case law updates, and community forums to empower users further.
-            </p>
+          <div className="category-card animate-up">
+            <div className="cat-icon">
+              <i className="fa-solid fa-hospital"></i>
+            </div>
+            <div className="cat-title">Support Services</div>
+            <div className="cat-desc">
+              NGO partners, shelters and medical referrals for victims and
+              vulnerable people.
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
 
-export default HomePage;
+export default Home;

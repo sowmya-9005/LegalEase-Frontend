@@ -1,64 +1,40 @@
-import React, { useState } from "react";
-import { FaBalanceScale, FaGlobe } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { FaBalanceScale } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
 import "./Header.css";
 
-const Header = ({ user, setUser }) => {
-  const [langOpen, setLangOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState("EN");
-  const navigate = useNavigate();
-
-  const toggleLang = () => setLangOpen(!langOpen);
-  const selectLang = (lang) => {
-    setSelectedLang(lang);
-    setLangOpen(false);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setUser(null);
-    navigate("/login");
-  };
+const Header = () => {
+  const { user, logout } = useAuth();
 
   return (
     <header className="header">
       <div className="header-left">
-        <Link to="/" className="logo">
+        <NavLink to="/" className="logo">
           <FaBalanceScale className="logo-icon" />
           LegalEase
-        </Link>
+        </NavLink>
 
         <nav className="nav-links">
-          <Link to="/">Home</Link>
-          <Link to="/rights">Know Your Rights</Link>
-          <Link to="/emergency">Emergency</Link>
-          <Link to="/about">About</Link>
-          <Link to="/contact" className="active">
-            Contact
-          </Link>
+          <NavLink to="/" end>Home</NavLink>
+          <NavLink to="/rights">Know Your Rights</NavLink>
+          <NavLink to="/emergency">Emergency</NavLink>
+          <NavLink to="/about">About</NavLink>
+          <NavLink to="/contact">Contact</NavLink>
+          <NavLink to="/queries">Queries</NavLink>
         </nav>
       </div>
 
       <div className="header-right">
-
         {user ? (
           <>
-            <span className="welcome-msg">
-              Welcome, {user.name} ({user.role})
-            </span>
-            <button className="logout-btn" onClick={handleLogout}>
-              Logout
-            </button>
+            <span className="welcome-msg">Welcome, {user.name} ({user.role})</span>
+            <button className="logout-btn" onClick={logout}>Logout</button>
           </>
         ) : (
           <>
-            <Link to="/login" className="login-btn">
-              Login
-            </Link>
-            <Link to="/signup" className="signup-btn">
-              Sign Up
-            </Link>
+            <NavLink to="/login" className="login-btn">Login</NavLink>
+            <NavLink to="/signup" className="signup-btn">Sign Up</NavLink>
           </>
         )}
       </div>

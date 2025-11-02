@@ -63,18 +63,15 @@ const Emergency = () => {
     <div>
       {/* ================= HERO SECTION ================= */}
       <section className="hero-section">
-        <div className="badge">⚠️ Legal Emergency Guide</div>
+        
         <h1>
-          Know Your <span>Legal Rights</span>
+          <span>Emergency Guide</span>
         </h1>
         <p className="hero-text">
           Get immediate guidance on legal emergencies. Access your rights,
           procedures, and emergency contacts in critical situations.
         </p>
-        <button className="hero-btn">📞 Emergency Helplines</button>
-        <div className="search-box">
-          <input type="text" placeholder="🔍 Search legal emergencies..." />
-        </div>
+        
       </section>
 
       {/* ================= CARDS SECTION ================= */}
