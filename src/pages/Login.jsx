@@ -18,7 +18,7 @@ const Login = () => {
     if (!form.email || !form.password) return alert("Enter email and password");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axios.post("https://legalease-backend-y5nn.onrender.com/api/auth/login", {
         email: form.email.trim().toLowerCase(),
         password: form.password,
       });
