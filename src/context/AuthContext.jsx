@@ -35,13 +35,37 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener("storage", syncAuth);
   }, []);
 
+  // ✅ Auto logout when token expires
+  useEffect(() => {
+    if (!token) return;
+
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      const expiryTime = payload.exp * 1000;
+
+      if (Date.now() >= expiryTime) {
+        console.warn("⛔ Token expired, logging out...");
+        logout();
+      } else {
+        const timeout = expiryTime - Date.now();
+        console.log("✅ Token valid, auto-logout in:", timeout / 1000, "seconds");
+
+        // auto logout when expiry is reached
+        const timer = setTimeout(() => logout(), timeout);
+        return () => clearTimeout(timer);
+      }
+    } catch (err) {
+      console.error("Invalid token format", err);
+      logout();
+    }
+  }, [token]);
+
   const login = ({ user: userObj, token: jwt }) => {
     setUser(userObj);
     setToken(jwt);
     localStorage.setItem("user", JSON.stringify(userObj));
     localStorage.setItem("token", jwt);
 
-    // ✅ force "storage" event so other contexts update immediately
     window.dispatchEvent(new Event("storage"));
   };
 
@@ -52,7 +76,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
 
     window.dispatchEvent(new Event("storage"));
-    window.location.href = "/login";
+    window.location.href = "/";  // ✅ redirect to home
   };
 
   return (
